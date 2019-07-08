@@ -7,7 +7,6 @@ app.set("view engine", "handlebars");
 
 const db = require("./utils/db");
 
-app.use(express.static("./public"));
 app.use(express.static("./static"));
 
 const bodyParser = require("body-parser");
@@ -28,12 +27,13 @@ app.get("/welcome", (req, res) => {
 
 app.post("/welcome", (req, res) => {
     console.log("req.body", req.body);
-    db.addSignature(req.body.firstName, req.body.LastName);
-    res.redirect("/thankyou");
+    db.addSignature(req.body.firstName, req.body.LastName, req.body.signature);
+    // res.redirect("/thankyou");
     db.getSigners();
 });
 
 // Rendering the page and handling requests from the thank you page
+
 app.get("/thankyou", (req, res) => {
     res.render("thankyou", {
         layout: "main",

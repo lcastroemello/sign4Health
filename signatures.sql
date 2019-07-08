@@ -1,3 +1,5 @@
+-- ////////DO NOT UNCOMMENT THIS, IT RESETS THE TABLE /////////////
+
 -- DROP TABLE IF EXISTS signatures;
 --
 -- CREATE TABLE signatures (
@@ -8,4 +10,5 @@
 -- date_and_time TIMESTAMP
 -- );
 
+-- //////////////////////////////////////////////////
 SELECT * FROM signatures;

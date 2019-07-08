@@ -7,10 +7,10 @@ exports.getSigners = function getSigners() {
     return db.query("SELECT * FROM signatures");
 };
 
-exports.addSignature = function addSignature(first_name, last_name) {
+exports.addSignature = function addSignature(first_name, last_name, signature) {
     console.log("addSignature works");
-    return db.query("INSERT INTO signatures (first, last) VALUES ($1, $2)", [
-        first_name,
-        last_name
-    ]);
+    return db.query(
+        "INSERT INTO signatures (first, last, signature, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
+        [first_name, last_name, signature]
+    );
 };

@@ -8,7 +8,12 @@
     <form class="" method="post">
         <input type="text" name="firstName" value="">First Name
         <input type="text" name="LastName" value="">Last Name
-        <button type="" name="submitButton">Send your signature!</button>
+        <br><br>
+        <p>Sign below:</p>
+        <canvas id="canvas" width="500" height="150"> Please sign here!</canvas>
+        <input type="hidden" name='signature' id='hiddenSignature' value="">
+        <br><br>
+        <button id='submitButton' type="" name="submitButton">Send your signature!</button>
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>
