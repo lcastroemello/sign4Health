@@ -1,4 +1,8 @@
 <body>
     <h1>We all signed for organized international cooperation to provide global healthcare!</h1>
-    <p>(here come the names of people who signed up)</p>
+    {{#list}}
+    <ul>
+        <li>{{first}} {{last}}</li>
+    </ul>
+    {{/list}}
 </body>

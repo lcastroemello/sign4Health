@@ -35,7 +35,7 @@ canvas.addEventListener("mouseleave", e => {
 function signing(x, y, isDown) {
     if (isDown) {
         f.lineWidth = "0.5";
-        f.strokeStyle = "yellow";
+        f.strokeStyle = "blue";
         f.beginPath();
         f.moveTo(lastX, lastY);
         f.lineTo(x, y);

@@ -5,3 +5,8 @@ body {
 canvas {
     background-color: white;
 }
+
+#signaturetks {
+    height: 150px;
+    width: 300px;
+}
