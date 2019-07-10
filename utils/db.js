@@ -1,6 +1,10 @@
 const spicedPg = require("spiced-pg");
 
-var db = spicedPg("postgres:postgres:postgres@localhost:5432/signatures");
+if (process.env.DATABASE_URL) {
+    db = spicedPg(process.env.DATABASE_URL);
+} else {
+    db = spicedPg(`postgres:postgres:postgres@localhost:5432/signatures`);
+}
 
 exports.addSignature = function addSignature(first_name, last_name, signature) {
     // console.log("db addSignature works");

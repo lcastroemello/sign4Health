@@ -52,8 +52,8 @@ app.post("/welcome", (req, res) => {
             res.render("welcome", {
                 layout: "main",
                 title: "Sign here for global health!",
-                error: `😧 Ups! Something went wrong! 😧
-                    Try again (remember that we need your first name, last name and signature for your support to be registered)`
+                error:
+                    "Ups! Something went wrong! 😧 Try again (remember that we need your first name, last name and signature for your support to be registered)
             });
         }); //end of catch err
 }); //end of app.post welcome
@@ -95,4 +95,4 @@ app.get("/signers", (req, res) => {
     });
 });
 
-app.listen(8080, () => ca.neon("Here for you, hon! Hit me!"));
+app.listen(process.env.PORT || 8080, () => ca.neon("Here for you, hon! Hit me!"));
