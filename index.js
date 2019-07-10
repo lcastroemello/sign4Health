@@ -2,20 +2,17 @@ const express = require("express");
 const app = express();
 const hb = require("express-handlebars");
 const ca = require("chalk-animation");
+const db = require("./utils/db");
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
-
-// var cookieSession = require("cookie-session");
-// app.use(
-//     cookieSession({
-//         secret: `signature setting`,
-//         maxAge: 1000 * 60 * 60 * 24 * 14
-//     })
-// );
-// app.use(require("cookie-parser")());
-
-const db = require("./utils/db");
-
+var cookieSession = require("cookie-session");
+app.use(
+    cookieSession({
+        secret: `It's gonna be ok`,
+        maxAge: 1000 * 60 * 60 * 24 * 14
+    })
+);
+app.use(require("cookie-parser")());
 app.use(express.static("./static"));
 
 const bodyParser = require("body-parser");
@@ -33,28 +30,48 @@ app.get("/welcome", (req, res) => {
     res.render("welcome", {
         layout: "main",
         title: "Sign here for global health!"
-    });
-});
+    }); //end of render welcome
+}); //end of app.get welcome
 
 app.post("/welcome", (req, res) => {
-    console.log("req.body", req.body);
-    db.addSignature(req.body.firstName, req.body.LastName, req.body.signature);
-    res.redirect("/thankyou");
-    db.getSigners();
-    // res.cookie("signature image", req.body.signature);
-});
+    let addSignature = db.addSignature(
+        req.body.firstName,
+        req.body.LastName,
+        req.body.signature
+    ); //end addSignature
+    addSignature
+        .then(function(addSignature) {
+            console.log("user id", addSignature.rows[0].id);
+            res.session.signed = addSignature.rows[0].id;
+        })
+        .then(function() {
+            res.redirect("/thankyou");
+        })
+        .catch(err => {
+            console.log(err);
+            res.render("welcome", {
+                layout: "main",
+                title: "Sign here for global health!",
+                error: `😧 Ups! Something went wrong! 😧
+                    Try again (remember that we need your first name, last name and signature for your support to be registered)`
+            });
+        }); //end of catch err
+}); //end of app.post welcome
 
 // Rendering the page and handling requests from the thank you page
 
 app.get("/thankyou", (req, res) => {
     list.then(function(list) {
-        console.log("this is my list count: ", list.rowCount);
+        // getSignature.then(function(getSignature) {
         res.render("thankyou", {
             layout: "main",
             title: "Thank you for signing!",
             signatureURL: "",
-            supporters: list.rowCount
+            supporters: list.rowCount + 1
         });
+        //     });
+        // }).catch(err => {
+        //     console.log(err);
     });
 });
 
@@ -67,12 +84,14 @@ app.post("/thankyou", (req, res) => {
 
 app.get("/signers", (req, res) => {
     list.then(function(list) {
-        console.log("this is list of signers: ", list.rows);
+        // console.log("this is list of signers: ", list.rows);
         res.render("signers", {
             layout: "main",
             title: "Look who has already signed!",
             list: list.rows
         });
+    }).catch(err => {
+        console.log(err);
     });
 });
 
