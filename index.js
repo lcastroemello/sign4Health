@@ -6,12 +6,15 @@ const db = require("./utils/db");
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
 var cookieSession = require("cookie-session");
+
 app.use(
     cookieSession({
-        secret: `It's gonna be ok`,
+        secret: "its gonna bew ok",
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
+// app.use(require("secrets.json"));
+
 app.use(require("cookie-parser")());
 app.use(express.static("./static"));
 
@@ -53,7 +56,7 @@ app.post("/welcome", (req, res) => {
                 layout: "main",
                 title: "Sign here for global health!",
                 error:
-                    "Ups! Something went wrong! 😧 Try again (remember that we need your first name, last name and signature for your support to be registered)
+                    "Ups! Something went wrong! 😧 Try again (remember that we need your first name, last name and signature for your support to be registered)"
             });
         }); //end of catch err
 }); //end of app.post welcome
@@ -95,4 +98,6 @@ app.get("/signers", (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 8080, () => ca.neon("Here for you, hon! Hit me!"));
+app.listen(process.env.PORT || 8080, () =>
+    ca.neon("Here for you, hon! Hit me!")
+);
