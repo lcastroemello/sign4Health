@@ -1,0 +1,13 @@
+<body>
+    <h1>Dear {{username}}, now that you commited to support our noble cause, we only need your signature to seal the deal!</h1>
+    <br>
+    <form class="" method="post">
+        <p>Sign below:</p>
+        <canvas id="canvas" width="500" height="150"> Please sign here!</canvas>
+        <input type="hidden" name='signature' id='hiddenSignature' value="">
+        <br><br>
+        <button id='submitButton' type="" name="submitButton">Send your signature!</button>
+        <p class ='errormessage'>{{error}}</p>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</body>

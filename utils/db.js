@@ -16,7 +16,7 @@ exports.addSignature = function addSignature(first_name, last_name, signature) {
 
 exports.getList = function getList() {
     // console.log("db list of signers");
-    return db.query("SELECT first, last FROM signatures");
+    return db.query("SELECT first, last FROM users");
 };
 
 //NEVER DO THAT - VULNERABLE TO INSERTION
