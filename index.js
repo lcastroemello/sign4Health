@@ -6,7 +6,8 @@ const db = require("./utils/db");
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
 var cookieSession = require("cookie-session");
-
+app.use(require("cookie-parser")());
+app.use(express.static("./static"));
 app.use(
     cookieSession({
         secret: "its gonna bew ok",
@@ -15,14 +16,12 @@ app.use(
 );
 // app.use(require("secrets.json"));
 
-app.use(require("cookie-parser")());
-app.use(express.static("./static"));
-
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // getting our list of signers from the db
 let list = db.getList();
+
 // Redirecting users from / to the welcome page
 app.get("/", (req, res) => {
     res.redirect("/welcome");
@@ -37,17 +36,10 @@ app.get("/welcome", (req, res) => {
 }); //end of app.get welcome
 
 app.post("/welcome", (req, res) => {
-    let addSignature = db.addSignature(
-        req.body.firstName,
-        req.body.LastName,
-        req.body.signature
-    ); //end addSignature
-    addSignature
-        .then(function(addSignature) {
-            console.log("user id", addSignature.rows[0].id);
-            res.session.signed = addSignature.rows[0].id;
-        })
-        .then(function() {
+    db.addSignature(req.body.firstName, req.body.LastName, req.body.signature)
+        .then(function(data) {
+            console.log("data add signature ", data.rows[0]);
+            req.session.signId = data.rows[0].id;
             res.redirect("/thankyou");
         })
         .catch(err => {
@@ -64,19 +56,19 @@ app.post("/welcome", (req, res) => {
 // Rendering the page and handling requests from the thank you page
 
 app.get("/thankyou", (req, res) => {
-    list.then(function(list) {
-        // getSignature.then(function(getSignature) {
-        res.render("thankyou", {
-            layout: "main",
-            title: "Thank you for signing!",
-            signatureURL: "",
-            supporters: list.rowCount + 1
+    list.then(function(data) {
+        db.getSignature(req.session.signId).then(info => {
+            res.render("thankyou", {
+                layout: "main",
+                title: "Thank you for signing!",
+                signatureURL: info.rows[0].signature,
+                supporters: data.rowCount + 1
+            });
         });
-        //     });
-        // }).catch(err => {
-        //     console.log(err);
-    });
-});
+    }).catch(err => {
+        console.log(err);
+    }); //end promises chain
+}); //end app get thank you
 
 app.post("/thankyou", (req, res) => {
     res.redirect("/signers");

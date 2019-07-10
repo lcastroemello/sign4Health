@@ -1,5 +1,5 @@
 const spicedPg = require("spiced-pg");
-
+let db;
 if (process.env.DATABASE_URL) {
     db = spicedPg(process.env.DATABASE_URL);
 } else {
@@ -9,7 +9,7 @@ if (process.env.DATABASE_URL) {
 exports.addSignature = function addSignature(first_name, last_name, signature) {
     // console.log("db addSignature works");
     return db.query(
-        "INSERT INTO signatures (first, last, signature, date_and_time) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING id ",
+        "INSERT INTO signatures (first, last, signature) VALUES ($1, $2, $3) RETURNING id ",
         [first_name, last_name, signature]
     );
 };

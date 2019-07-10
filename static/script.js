@@ -13,26 +13,29 @@ function signatureLine() {
 signatureLine();
 let mousePressed = false;
 let lastX, lastY;
-let rect = canvas.getBoundingClientRect();
+
 canvas.addEventListener("mousedown", e => {
+    let rect = canvas.getBoundingClientRect();
     console.log("mouse down is being detected");
     mousePressed = true;
     signing(e.clientX - rect.left, e.clientY - rect.top, false);
 });
 canvas.addEventListener("mousemove", e => {
+    let rect = canvas.getBoundingClientRect();
     if (mousePressed) {
         signing(e.clientX - rect.left, e.clientY - rect.top, true);
     }
 });
-canvas.addEventListener("mouseup", e => {
+canvas.addEventListener("mouseup", () => {
     mousePressed = false;
 });
 
-canvas.addEventListener("mouseleave", e => {
+canvas.addEventListener("mouseleave", () => {
     mousePressed = false;
 });
 
 function signing(x, y, isDown) {
+    console.log("is down", x, y);
     if (isDown) {
         f.lineWidth = "0.5";
         f.strokeStyle = "blue";
@@ -48,7 +51,7 @@ function signing(x, y, isDown) {
 
 let signatureInput = document.getElementById("hiddenSignature");
 let button = document.getElementById("submitButton");
-button.addEventListener("click", e => {
+button.addEventListener("click", () => {
     signatureInput.value = canvas.toDataURL();
     console.log("this is the signature", signatureInput.value);
 });
