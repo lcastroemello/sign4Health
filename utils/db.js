@@ -6,34 +6,53 @@ if (process.env.DATABASE_URL) {
     db = spicedPg(`postgres:postgres:postgres@localhost:5432/signatures`);
 }
 
-exports.addSignature = function addSignature(first_name, last_name, signature) {
+//
+//-------ADDING info to tables-------------
+//
+
+exports.addUser = function addSignature(
+    first_name,
+    last_name,
+    email,
+    password
+) {
     // console.log("db addSignature works");
     return db.query(
-        "INSERT INTO signatures (first, last, signature) VALUES ($1, $2, $3) RETURNING id ",
-        [first_name, last_name, signature]
+        "INSERT INTO users (first, last, email, password_digest) VALUES ($1, $2, $3, $4) RETURNING id",
+        [first_name, last_name, email, password]
     );
 };
+
+exports.addSignature = function addSignature(signature, user_id) {
+    return db.query(
+        "INSERT INTO signatures (signature, user_id) VALUES ($1, $2) RETURNING id",
+        [signature, user_id]
+    );
+};
+
+exports.addUserInfo = function addUserInfo(user_id, age, city, url) {
+    return db.query(
+        "INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING id",
+        [user_id, age, city, url]
+    );
+};
+
+//
+//-----------GETTING info from tables-------------
+//
 
 exports.getList = function getList() {
     // console.log("db list of signers");
     return db.query("SELECT first, last FROM users");
 };
 
-//NEVER DO THAT - VULNERABLE TO INSERTION
-// exports.getID = function getID(first_name, last_name) {
-//     console.log("get ID db works");
-//     return db.query(
-//         "SELECT id FROM signatures WHERE first='" +
-//             first_name +
-//             "'AND '" +
-//             last_name +
-//             "'"
-//     );
-// };
+exports.getUsername = function getUsername(id_number) {
+    return db.query("SELECT first FROM users WHERE id=$1", [id_number]);
+};
 
 exports.getSignature = function getSignature(id_number) {
     console.log("get signature db works");
-    return db.query(
-        "SELECT signature FROM signatures WHERE id='" + id_number + "'"
-    );
+    return db.query("SELECT signature FROM signatures WHERE user_id=$1", [
+        id_number
+    ]);
 };
