@@ -1,15 +1,23 @@
 body {
     background-image: url("healthbackground.jpg");
-    display: inline;
+    display: grid;
+    grid-template-rows: 1fr 2rem;
     justify-content: center;
 }
 
 #background {
+}
+
+main {
+    grid-row: 1/2;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 canvas {
@@ -56,6 +64,7 @@ a:hover {
     text-align: center;
     font-size: 3rem;
 }
+
 p {
     font-size: 1.5rem;
     color: gold;
@@ -101,6 +110,29 @@ form {
     font-size: 1.5rem;
     font-family: cursive;
     text-align: center;
+}
+
+footer {
+    background-color: gold;
+    align-items: center;
+    grid-row: 2/3;
+    bottom: 0;
+    display: inline;
+}
+
+.footertext {
+    color: black;
+    font-size: 1rem;
+}
+
+.logout {
+    font-size: 1.5rem;
+    background-color: black;
+    color: gold;
+    font-weight: bold;
+    padding: 0.2rem;
+    font-family: serif;
+    float: right;
 }
 
 .errormessage {

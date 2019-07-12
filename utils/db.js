@@ -28,7 +28,7 @@ exports.addSignature = function addSignature(signature, user_id) {
 exports.addUserInfo = function addUserInfo(user_id, age, city, url) {
     return db.query(
         "INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING id",
-        [user_id || null, age || null, city || null, url || null]
+        [user_id, age, city, url]
     );
 };
 
@@ -41,17 +41,31 @@ exports.getList = function getList() {
     return db.query("SELECT first, last FROM users");
 };
 
+exports.getUserRegInfo = function(id) {
+    return db.query("SELECT * FROM users WHERE id=$1", [id]);
+};
+
+exports.getUserInfo = function(user_id) {
+    return db.query("SELECT * FROM user_profiles WHERE user_id=$1", [user_id]);
+};
+
 exports.getUsername = function getUsername(id_number) {
     return db.query("SELECT first FROM users WHERE id=$1", [id_number]);
 };
 
 exports.getSignature = function getSignature(id_number) {
     console.log("get signature db works");
-    return db.query(`SELECT signature FROM signatures WHERE id=$1`, [
+    return db.query("SELECT signature FROM signatures WHERE id=$1", [
         id_number
     ]);
 };
 
 exports.getUserByEmail = function getUserbyEmail(email) {
     return db.query("SELECT * FROM users WHERE email=$1", [email]);
+};
+
+//----------UPDATING TABLES-------------
+
+exports.updateUsers = function() {
+    return;
 };

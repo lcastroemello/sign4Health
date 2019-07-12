@@ -82,7 +82,7 @@ app.post("/welcome", (req, res) => {
                     hash
                 )
                 .then(data => {
-                    console.log("data add user ", data);
+                    // console.log("data add user ", data);
                     req.session.userId = data.rows[0].id;
                     res.redirect("/userinfo");
                 });
@@ -111,22 +111,23 @@ app.post("/userinfo", (req, res) => {
     if (req.body.age == "" && req.body.city == "" && req.body.homepage == "") {
         res.redirect("/signature");
     } else {
+        console.log(req.session);
         db.addUserInfo(
             req.session.userId,
-            req.body.age,
-            req.body.city,
-            req.body.homepage
+            req.body.age || null,
+            req.body.city || null,
+            req.body.homepage || null
         )
             .then(info => {
                 req.session.userInfoId = info.rows[0].id;
-                req.session.userId = true;
+                req.session.loggedIn = true;
                 res.redirect("/signature");
             })
             .catch(err => {
-                console.log(err);
+                console.log("error on add user: ", err.message);
                 res.render("userinfo", {
                     layout: "main",
-                    title: "Let us know more about you",
+                    title: "Oh no!",
                     error: "Ups! Something went wrong! 😧 Try again"
                 }); //end of render
             });
@@ -157,7 +158,7 @@ app.post("/signature", (req, res) => {
             db.getUsername(req.session.signId).then(info => {
                 res.render("signature", {
                     layout: "main",
-                    title: "Sign here!",
+                    title: "Oh no!",
                     username: info.rows[0].first,
                     error: "Ups! Something went wrong! 😧 Try again"
                 }); //end render
@@ -229,8 +230,9 @@ app.post("/login", (req, res) => {
                     data.rows[0].password_digest
                 ).then(boolean => {
                     if (boolean) {
-                        req.session.userId = true;
-                        res.redirect("/welcome");
+                        req.session.loggedIn = true;
+                        req.session.userId = data.rows[0].id;
+                        res.redirect("/myprofile");
                     } else {
                         res.render("login", {
                             layout: "main",
@@ -253,6 +255,32 @@ app.post("/login", (req, res) => {
 }); // end app.post login
 
 //--------------PERSONAL PROFILE PAGE------------
+app.get("/myprofile", (req, res) => {
+    db.getUserRegInfo(req.session.userId)
+        .then(info => {
+            db.getUserInfo(req.session.userId).then(extra => {
+                res.render("myprofile", {
+                    layout: "main",
+                    title: "Welcome back" + info.rows[0].first,
+                    firstName: info.rows[0].first,
+                    age: extra.rows[0].age,
+                    city: extra.rows[0].city,
+                    homepage: extra.rows[0].url
+                }); //end render myprofile
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+//-------------Logout page-------------------------
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/welcome");
+});
+
+//--------------Let's get that server running!------------------------------
 
 if (require.main == module) {
     app.listen(process.env.PORT || 8080, () => {
