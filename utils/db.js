@@ -10,12 +10,7 @@ if (process.env.DATABASE_URL) {
 //-------ADDING info to tables-------------
 //
 
-exports.addUser = function addSignature(
-    first_name,
-    last_name,
-    email,
-    password
-) {
+exports.addUser = function addUser(first_name, last_name, email, password) {
     // console.log("db addSignature works");
     return db.query(
         "INSERT INTO users (first, last, email, password_digest) VALUES ($1, $2, $3, $4) RETURNING id",
@@ -33,7 +28,7 @@ exports.addSignature = function addSignature(signature, user_id) {
 exports.addUserInfo = function addUserInfo(user_id, age, city, url) {
     return db.query(
         "INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING id",
-        [user_id, age, city, url]
+        [user_id || null, age || null, city || null, url || null]
     );
 };
 
@@ -52,7 +47,11 @@ exports.getUsername = function getUsername(id_number) {
 
 exports.getSignature = function getSignature(id_number) {
     console.log("get signature db works");
-    return db.query("SELECT signature FROM signatures WHERE user_id=$1", [
+    return db.query(`SELECT signature FROM signatures WHERE id=$1`, [
         id_number
     ]);
+};
+
+exports.getUserByEmail = function getUserbyEmail(email) {
+    return db.query("SELECT * FROM users WHERE email=$1", [email]);
 };

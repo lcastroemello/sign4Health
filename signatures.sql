@@ -12,18 +12,20 @@ CREATE TABLE users (
     date_and_time TIMESTAMP
 );
 SELECT * FROM users;
+
+
 ------------ Table to colect signatures--------
 DROP TABLE IF EXISTS signatures;
 --
 CREATE TABLE signatures (
 id SERIAL PRIMARY KEY,
-user_id INTEGER REFERENCES users(id)
-ON DELETE CASCADE,
+user_id INTEGER REFERENCES users(id),
 signature TEXT NOT NULL,
 date_and_time TIMESTAMP
 );
 
 SELECT * FROM signatures;
+
 
 -----------Extra data on users--------------
 
@@ -31,8 +33,7 @@ DROP TABLE IF EXISTS user_profiles;
 --
 CREATE TABLE user_profiles (
 id SERIAL PRIMARY KEY,
-user_id INTEGER REFERENCES users(id)
-ON DELETE CASCADE,
+user_id INTEGER REFERENCES users(id),
 age INTEGER,
 city VARCHAR(255),
 url VARCHAR(1000)
