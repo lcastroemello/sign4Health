@@ -1,15 +1,15 @@
-
 <body>
     <main>
-    <h1>We all signed for organized international cooperation to provide global healthcare!</h1>
+    <h1>We in {{city}} all signed for organized international cooperation to provide global healthcare!</h1>
     {{#list}}
     <ul>
         <li>
-        {{#if url}} <a href="{{url}}"> {{first}}{{last}}</a>
+        {{#if url}} <a href="{{url}}"> {{first}} {{last}}</a>
         {{else}} {{first}} {{last}}
         {{/if}} |
-        {{#if age}} {{age}} {{/if}} |
-        {{#if city}} <a href="/signers/{{city}}"> {{city}} </a>
+
+        {{#if age}}
+        {{age}}
         {{/if}}
     </li>
     </ul>

@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS signatures;
 --
 CREATE TABLE signatures (
 id SERIAL PRIMARY KEY,
-user_id INTEGER REFERENCES users(id),
+user_id INTEGER REFERENCES users(id) UNIQUE,
 signature TEXT NOT NULL,
 date_and_time TIMESTAMP
 );
@@ -33,10 +33,9 @@ DROP TABLE IF EXISTS user_profiles;
 --
 CREATE TABLE user_profiles (
 id SERIAL PRIMARY KEY,
-user_id INTEGER REFERENCES users(id),
+user_id INTEGER REFERENCES users(id) UNIQUE,
 age INTEGER,
 city VARCHAR(255),
 url VARCHAR(1000)
 );
-
 SELECT * FROM user_profiles;

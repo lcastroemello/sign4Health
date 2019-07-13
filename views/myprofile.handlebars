@@ -5,19 +5,31 @@
     <p>Feel free to update your information on our database! The more your signing buddies know, the closer our community becomes! </p>
     <br>
     <form class="" method="post">
-        <input type="number" name="age" value="{{age}}">What is your age?
+        <input type="text" name="first" value="{{first}}">First Name
         <br><br>
-        <input type="text" name="city" value="{{city}}">On which city do you live?
+        <input type="text" name="last" value="{{last}}">Last Name
         <br><br>
-        <input type="text" name="homepage" value="{{homepage}}">Have a homepage?
+        <input type="email" name="email" value="{{email}}">e-mail
+        <input type="password" name="password" value="">password
+        <br><br>
+        <input type="number" name="age" value="{{age}}"> Age
+        <br><br>
+        <input type="text" name="city" value="{{city}}"> City
+        <br><br>
+        <input type="url" name="homepage" value="{{homepage}}"> Homepage
         <br><br>
         <button id='submitButton' type="" name="submitButton">Update my information</button>
         <p class ='errormessage'>{{error}}</p>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
+    <br>
+    <p>See who else signed <a href="/signers"> CLICKING HERE </a></p>
     </main>
+    <br>
     <footer>
     <p class='footertext'> &copy; Livia de Castro e Mello 2019 🌎 🌍 🌏 </p>
     <a class="logout" href="/logout">  LOG OUT  </a>
+    <a href="/about"> ABOUT </a>
 </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

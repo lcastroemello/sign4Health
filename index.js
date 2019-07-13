@@ -4,12 +4,13 @@ const hb = require("express-handlebars");
 const ca = require("chalk-animation");
 const db = require("./utils/db");
 const bcrypt = require("bcryptjs");
+const csurf = require("csurf");
 
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
 
 var cookieSession = require("cookie-session");
-// app.use(require("cookie-parser")());
+
 app.use(express.static("./static"));
 app.use(
     cookieSession({
@@ -17,10 +18,19 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
-// app.use(require("secrets.json"));
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
+// app.use(function(req, res, next) {
+//     res.set("x-frame-options", "deny").next();
+// });
 
 //---------------BCRYPT functions-----------------
 function hashPassword(plainTextPassword) {
@@ -55,6 +65,14 @@ function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
     });
 }
 
+//-----------------middlewares (user routes) --------
+
+const {
+    notLoggedIn,
+    requireSignature,
+    loggedIn
+} = require("./utils/middleware");
+
 //------------------/route--------------------
 
 // Redirecting users from / to the welcome page
@@ -64,14 +82,14 @@ app.get("/", (req, res) => {
 
 // ------------WELCOME / REGISTER ---------
 
-app.get("/welcome", (req, res) => {
+app.get("/welcome", loggedIn, (req, res) => {
     res.render("welcome", {
         layout: "main",
         title: "Register for global health!"
     }); //end of render welcome
 }); //end of app.get welcome
 
-app.post("/welcome", (req, res) => {
+app.post("/welcome", loggedIn, (req, res) => {
     hashPassword(req.body.password)
         .then(hash => {
             return db
@@ -98,16 +116,24 @@ app.post("/welcome", (req, res) => {
         }); //end of promise chain
 }); //end of app.post welcome
 
+//--------------ABOUT----------------------
+app.get("/about", (req, res) => {
+    res.render("about", {
+        layout: "main",
+        title: "Why to sign?"
+    });
+});
+
 //--------------USER INFO-------------------
 
-app.get("/userinfo", (req, res) => {
+app.get("/userinfo", requireSignature, loggedIn, (req, res) => {
     res.render("userinfo", {
         layout: "main",
         title: "Let us know more about you"
     }); //end of render
 }); // end of get userinfo
 
-app.post("/userinfo", (req, res) => {
+app.post("/userinfo", requireSignature, loggedIn, (req, res) => {
     if (req.body.age == "" && req.body.city == "" && req.body.homepage == "") {
         res.redirect("/signature");
     } else {
@@ -135,7 +161,7 @@ app.post("/userinfo", (req, res) => {
 }); //end of post userinfo
 
 //------------SIGNATURE------------------------
-app.get("/signature", (req, res) => {
+app.get("/signature", notLoggedIn, (req, res) => {
     db.getUsername(req.session.userId).then(info => {
         res.render("signature", {
             layout: "main",
@@ -145,9 +171,7 @@ app.get("/signature", (req, res) => {
     }); //end promise chain
 }); //end get signature
 
-app.post("/signature", (req, res) => {
-    console.log("this is signature body", req.body);
-    console.log("this is req.session", req.session);
+app.post("/signature", notLoggedIn, (req, res) => {
     db.addSignature(req.body.signature, req.session.userId)
         .then(data => {
             req.session.signId = data.rows[0].id;
@@ -155,7 +179,7 @@ app.post("/signature", (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            db.getUsername(req.session.signId).then(info => {
+            db.getUsername(req.session.userId).then(info => {
                 res.render("signature", {
                     layout: "main",
                     title: "Oh no!",
@@ -168,9 +192,9 @@ app.post("/signature", (req, res) => {
 
 //-------------THANK YOU-----------------------
 
-app.get("/thankyou", (req, res) => {
+app.get("/thankyou", notLoggedIn, requireSignature, (req, res) => {
     db.getList().then(data => {
-        db.getSignature(req.session.signId)
+        db.getSignature(req.session.userId)
             .then(info => {
                 res.render("thankyou", {
                     layout: "main",
@@ -185,15 +209,16 @@ app.get("/thankyou", (req, res) => {
     });
 }); //end app get thank you
 
-app.post("/thankyou", (req, res) => {
+app.post("/thankyou", notLoggedIn, requireSignature, (req, res) => {
     res.redirect("/signers");
 }); //end post thank you
 
 //--------------SIGNERS LIST -------------------
 
-app.get("/signers", (req, res) => {
-    db.getList()
+app.get("/signers", notLoggedIn, requireSignature, loggedIn, (req, res) => {
+    db.fullDataList(req.session.userId)
         .then(list => {
+            console.log("testing signers list ", list);
             res.render("signers", {
                 layout: "main",
                 title: "Look who has already signed!",
@@ -205,16 +230,24 @@ app.get("/signers", (req, res) => {
         }); //end promise chain
 }); //end get signers
 
+app.get("/signers/:city", notLoggedIn, (req, res) => {
+    db.cityList(req.params.city.toLowerCase()).then(list => {
+        res.render("citylist", {
+            city: req.params.city,
+            list: list.rows
+        });
+    });
+});
 //--------------LOGIN PAGE-----------------------
 
-app.get("/login", (req, res) => {
+app.get("/login", requireSignature, loggedIn, (req, res) => {
     res.render("login", {
         layout: "main",
         title: "Login"
     });
 }); // end get login
 
-app.post("/login", (req, res) => {
+app.post("/login", requireSignature, loggedIn, (req, res) => {
     db.getUserByEmail(req.body.email)
         .then(data => {
             if (!data.rows[0]) {
@@ -223,25 +256,42 @@ app.post("/login", (req, res) => {
                     title: "Oh no!",
                     error:
                         "Ups! Something went wrong! 😧 Are you sure you have already registered in our petition? Try again"
-                }); //end render login not registered
+                });
             } else {
-                checkPassword(
-                    req.body.password,
-                    data.rows[0].password_digest
-                ).then(boolean => {
-                    if (boolean) {
-                        req.session.loggedIn = true;
-                        req.session.userId = data.rows[0].id;
-                        res.redirect("/myprofile");
-                    } else {
-                        res.render("login", {
-                            layout: "main",
-                            title: "Oh no!",
-                            error:
-                                "Oh no! 😧 Your email and password are not a match 💔 Try again"
-                        }); //end render login no match
-                    } //end inner else
-                }); //end outer else promise chain
+                checkPassword(req.body.password, data.rows[0].password_digest)
+                    .then(boolean => {
+                        if (boolean) {
+                            req.session.userId = data.rows[0].id;
+                            db.getsignId(data.rows[0].id)
+                                .then(signid => {
+                                    if (signid) {
+                                        console.log(
+                                            "testing sign id cookie",
+                                            signid.rows[0].id
+                                        );
+                                        req.session.signId = signid.rows[0].id;
+                                    } else {
+                                        console.log(
+                                            "i put this to make it work"
+                                        );
+                                    }
+                                    res.redirect("/thankyou");
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        } else {
+                            res.render("login", {
+                                layout: "main",
+                                title: "Oh no!",
+                                error:
+                                    "Oh no! 😧 Your email and password are not a match 💔 Try again"
+                            }); //end render login no match
+                        } //end inner else
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    }); //end inner else promise chain
             }
         })
         .catch(err => {
@@ -255,17 +305,20 @@ app.post("/login", (req, res) => {
 }); // end app.post login
 
 //--------------PERSONAL PROFILE PAGE------------
-app.get("/myprofile", (req, res) => {
+
+app.get("/myprofile", notLoggedIn, requireSignature, loggedIn, (req, res) => {
     db.getUserRegInfo(req.session.userId)
         .then(info => {
             db.getUserInfo(req.session.userId).then(extra => {
                 res.render("myprofile", {
                     layout: "main",
-                    title: "Welcome back" + info.rows[0].first,
-                    firstName: info.rows[0].first,
-                    age: extra.rows[0].age,
-                    city: extra.rows[0].city,
-                    homepage: extra.rows[0].url
+                    title: "Welcome back " + info.rows[0].first,
+                    first: info.rows[0].first,
+                    last: info.rows[0].last,
+                    email: info.rows[0].email,
+                    age: extra.rows[0] ? extra.rows[0].age : "",
+                    city: extra.rows[0] ? extra.rows[0].city : "",
+                    homepage: extra.rows[0] ? extra.rows[0].url : ""
                 }); //end render myprofile
             });
         })
@@ -274,8 +327,58 @@ app.get("/myprofile", (req, res) => {
         });
 });
 
+app.post("/myprofile", notLoggedIn, requireSignature, loggedIn, (req, res) => {
+    db.getUserRegInfo(req.session.userId).then(info => {
+        db.getUserInfo(req.session.userId).then(extra => {
+            db.updateUserInfo(
+                req.body.age,
+                req.body.city,
+                req.body.homepage,
+                req.session.userId
+            )
+                .then(data => {
+                    if (req.body.password != "") {
+                        return hashPassword(req.body.password);
+                    } else {
+                        return info.rows[0].password_digest;
+                    }
+                })
+                .then(hash => {
+                    db.updateUsers(
+                        req.body.firstName || info.rows[0].first,
+                        req.body.lastName || info.rows[0].last,
+                        req.body.email || info.rows[0].email,
+                        hash,
+                        req.session.userId
+                    );
+                    // res.alert("Profile updated successfully!");
+                    res.redirect("/signers");
+                })
+                .catch(err => {
+                    console.log(err);
+                    db.getUserRegInfo(req.session.userId).then(info => {
+                        db.getUserInfo(req.session.userId).then(extra => {
+                            res.render("myprofile", {
+                                layout: "main",
+                                title: "Welcome back " + info.rows[0].first,
+                                first: info.rows[0].first,
+                                last: info.rows[0].last,
+                                email: info.rows[0].email,
+                                age: extra.rows[0].age,
+                                city: extra.rows[0].city,
+                                homepage: extra.rows[0].url,
+                                error:
+                                    "Ups! Something went wrong! 😧  Try again"
+                            }); //end render myprofile
+                        });
+                    });
+                });
+        });
+    });
+});
+
 //-------------Logout page-------------------------
-app.get("/logout", (req, res) => {
+app.get("/logout", notLoggedIn, (req, res) => {
     req.session = null;
     res.redirect("/welcome");
 });

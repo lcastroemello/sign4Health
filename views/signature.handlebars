@@ -1,5 +1,6 @@
 <body>
-    <h1>Dear {{username}}, now that you commited to support our noble cause, we only need your signature to seal the deal!</h1>
+    <h1>Dear {{username}}, you are on the way
+         to support our noble cause, we only need your signature to seal the deal!</h1>
     <br>
     <form class="" method="post">
         <p>Sign below:</p>
@@ -8,6 +9,10 @@
         <br><br>
         <button id='submitButton' type="" name="submitButton">Send your signature!</button>
         <p class ='errormessage'>{{error}}</p>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
+    <h2>Still not sure about signing? Read more about how important this matter is clicking<a href="/about"> HERE </a> </h2>
+    <h2>Feel free to   <a href="/logout"> LOG OUT </a>   and come back to sign later if you prefer 🤷🏻‍♀️ </h2>
+    <br>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>
