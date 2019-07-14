@@ -1,22 +1,20 @@
 body {
-    background-image: url("estetoscópio.jpg");
-    background-size: 100% 100%;
+    background-size: cover;
     display: grid;
-    grid-template-rows: 1fr 1rem;
-    justify-content: center;
+    grid-template-rows: 1rem 1fr 1rem;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    padding-bottom: 0;
 }
 
 main {
-    grid-row: 1/2;
-    background-color: rgba(0, 0, 0, 0.3);
+    grid-row: 2/3;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-canvas {
-    background-color: white;
-    text-align: center;
+    background-size: container;
 }
 
 h1 {
@@ -38,8 +36,19 @@ h2 {
 
 button {
     font-size: 1.5rem;
-    background-color: gold;
+    background-color: rgba(255, 215, 1, 0.7);
     border-radius: 25px;
+    font-family: "PT Mono", monospace;
+}
+
+.fakebutton {
+    font-size: 1.5rem;
+    background-color: rgba(255, 215, 1, 0.7);
+    border-radius: 25px;
+    border: white 1px solid;
+    padding: 0.3rem;
+    color: black;
+    font-weight: normal;
 }
 
 a {
@@ -54,11 +63,6 @@ a:hover {
     color: gold;
 }
 
-.links {
-    text-align: center;
-    font-size: 1.5rem;
-}
-
 p {
     font-size: 1.5rem;
     color: gold;
@@ -67,6 +71,159 @@ p {
     padding-right: 200px;
     padding-left: 200px;
     text-align: center;
+}
+
+form {
+    padding-right: 200px;
+    padding-left: 200px;
+    color: white;
+    font-size: 1.5rem;
+    font-family: "PT Mono", monospace;
+    text-align: center;
+}
+
+.errormessage {
+    font-size: 3rem;
+    color: red;
+    background: gold;
+    border-radius: 50px;
+}
+/* WELCOME PAGE */
+
+.welcome {
+    background-image: url("registerbw.jpg");
+}
+
+canvas {
+    background-color: white;
+    text-align: center;
+}
+
+/* ABOUT */
+.aboutpage {
+    background-image: url("thankyoubw.jpg");
+}
+.links {
+    display: grid;
+    grid-template-rows: 0.2fr 1fr 0.2fr;
+    grid-template-columns: 0.2fr 0.3fr 0.2fr 0.3fr 0.2fr;
+    padding: 5rem;
+}
+.youtubevideo {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.germangov {
+    grid-row: 1/2;
+    grid-column: 3/4;
+    width: 0.5fr;
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.un {
+    grid-row: 1/2;
+    grid-column: 5/6;
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.who {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.abouttext {
+    grid-row: 2/3;
+    grid-column: 2/5;
+    text-align: center;
+    align-self: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+.wiki {
+    grid-row: 2/3;
+    grid-column: 5/6;
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.tarik {
+    grid-row: 3/4;
+    grid-column: 1/2;
+    text-align: center;
+    align-self: center;
+    font-size: 1.3rem;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.sridhar {
+    grid-row: 3/4;
+    grid-column: 3/4;
+    width: 0.5fr;
+    text-align: center;
+    align-self: center;
+    font-size: 1.3rem;
+    text-decoration: underline;
+    font-weight: normal;
+}
+.twitter {
+    grid-row: 3/4;
+    grid-column: 5/6;
+    text-align: center;
+    align-self: center;
+    font-size: 1.3rem;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+/* LOGIN */
+.loginpage {
+    background-image: url("loginbw.jpg");
+}
+
+/* USERINFO */
+.userinfo {
+    background-image: url("welcomebw.jpg");
+}
+
+/* SIGNIGN PAGE */
+.sigpage {
+    background-image: url("sigbw.jpg");
+}
+
+/* THANK YOU */
+
+.thankyoupage {
+    background-image: url("vaccinebw.jpg");
+}
+
+#signaturetks {
+    height: 150px;
+    width: 500px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+}
+/* SIGNATURES */
+
+.signerslist {
+    background-image: url("signersbw.jpg");
 }
 
 li {
@@ -84,51 +241,78 @@ ul {
     text-align: center;
 }
 
-#signaturetks {
-    height: 150px;
-    width: 500px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50px;
+/* CITY signatures */
+.signerscity {
+    background-image: url("sigbw.jpg");
 }
 
-#cutebear {
-    height: 100px;
-    width: 100px;
+/* My profile */
+.myprofile {
+    background-image: url("profilebw.jpg");
 }
 
-form {
-    padding-right: 200px;
-    padding-left: 200px;
-    color: white;
+/* HEADER */
+
+.header {
+    grid-row: 3/4;
+    display: grid;
+    grid-template-columns: 13rem 1fr 9rem 9rem;
+
+    height: 3rem;
+}
+
+.myprof {
+    grid-column: 1/2;
     font-size: 1.5rem;
-    font-family: "PT Mono", monospace;
+    color: black;
+    font-weight: bold;
+    padding: 0.3rem;
+    font-family: serif;
+    display: grid;
     text-align: center;
+    align-self: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.log {
+    font-size: 1.5rem;
+    color: black;
+    font-weight: bold;
+    font-family: serif;
+    grid-column: 4/5;
+    display: grid;
+    text-align: center;
+    align-self: center;
+    padding-right: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
-footer {
-    background-color: gold;
-    grid-row: 2/3;
-    display: inline;
+.about {
+    font-size: 1.5rem;
+    color: black;
+    font-weight: bold;
+    font-family: serif;
+    grid-column: 3/4;
+    text-align: center;
+    align-self: center;
+    display: grid;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+/* FOOTER */
+
+.footer {
+    background-color: rgba(255, 215, 1, 0.3);
+    grid-row: 3/4;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    height: 3rem;
+    display: grid;
+    box-shadow: inset 0px 0px 40px 40px rgba(255, 215, 1, 0.3);
+    bottom: 0;
 }
 
 .footertext {
     color: black;
-    font-size: 1.5rem;
-}
-
-.logout {
-    font-size: 1.5rem;
-    background-color: black;
-    color: gold;
-    font-weight: bold;
-    padding: 0.2rem;
-    font-family: serif;
-}
-
-.errormessage {
-    font-size: 3rem;
-    color: red;
-    background: gold;
-    border-radius: 50px;
+    font-size: 1rem;
+    align-items: center;
+    text-align: center;
 }

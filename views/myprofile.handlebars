@@ -1,4 +1,9 @@
-<body>
+<body class='myprofile'>
+    <div class='header'>
+        <a class="myprof" href="/signers">SIGNATURES</a>
+        <a class="about" href="{{about}}"> {{abouttext}}</a>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
     <main>
     <h1>👩‍⚕️ Hey {{firstName}}! Welcome to your personal profile! 👨‍⚕️</h1>
     <br>
@@ -25,12 +30,9 @@
     <br>
     <p>See who else signed <a href="/signers"> CLICKING HERE </a></p>
     </main>
-    <br>
-    <footer>
-    <p class='footertext'> &copy; Livia de Castro e Mello 2019 🌎 🌍 🌏 </p>
-    <a class="logout" href="/logout">  LOG OUT  </a>
-    <a href="/about"> ABOUT </a>
-</footer>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>

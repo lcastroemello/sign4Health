@@ -14,7 +14,7 @@ var cookieSession = require("cookie-session");
 app.use(express.static("./static"));
 app.use(
     cookieSession({
-        secret: "its gonna bew ok",
+        secret: "its gonna be ok",
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
@@ -85,7 +85,11 @@ app.get("/", (req, res) => {
 app.get("/welcome", loggedIn, (req, res) => {
     res.render("welcome", {
         layout: "main",
-        title: "Register for global health!"
+        title: "Register for global health!",
+        loglink: "/login",
+        logbutton: "LOGIN",
+        about: "/about",
+        abouttext: "ABOUT"
     }); //end of render welcome
 }); //end of app.get welcome
 
@@ -111,17 +115,37 @@ app.post("/welcome", loggedIn, (req, res) => {
                 layout: "main",
                 title: "Sign here for global health!",
                 error:
-                    "Ups! Something went wrong! 😧 Try again (remember all fields are mandatory)"
+                    "Ups! Something went wrong! 😧 Try again (remember all fields are mandatory)",
+                loglink: "/login",
+                logbutton: "LOGIN",
+                about: "/about",
+                abouttext: "ABOUT"
             }); //end render
         }); //end of promise chain
 }); //end of app.post welcome
 
 //--------------ABOUT----------------------
 app.get("/about", (req, res) => {
-    res.render("about", {
-        layout: "main",
-        title: "Why to sign?"
-    });
+    if (!req.session.userId && !req.session.signId) {
+        res.render("about", {
+            layout: "main",
+            title: "Why to sign?",
+            loglink: "/welcome",
+            logbutton: "REGISTER",
+            about: "/login",
+            abouttext: "LOGIN"
+            // type: "hidden"
+        });
+    } else {
+        res.render("about", {
+            layout: "main",
+            title: "Why to sign?",
+            loglink: "/welcome",
+            logbutton: "REGISTER",
+            about: "/logout",
+            abouttext: "LOGOUT"
+        });
+    }
 });
 
 //--------------USER INFO-------------------
@@ -129,7 +153,9 @@ app.get("/about", (req, res) => {
 app.get("/userinfo", requireSignature, loggedIn, (req, res) => {
     res.render("userinfo", {
         layout: "main",
-        title: "Let us know more about you"
+        title: "Let us know more about you",
+        loglink: "/about",
+        logbutton: "ABOUT"
     }); //end of render
 }); // end of get userinfo
 
@@ -146,7 +172,6 @@ app.post("/userinfo", requireSignature, loggedIn, (req, res) => {
         )
             .then(info => {
                 req.session.userInfoId = info.rows[0].id;
-                req.session.loggedIn = true;
                 res.redirect("/signature");
             })
             .catch(err => {
@@ -154,6 +179,8 @@ app.post("/userinfo", requireSignature, loggedIn, (req, res) => {
                 res.render("userinfo", {
                     layout: "main",
                     title: "Oh no!",
+                    loglink: "/about",
+                    logbutton: "ABOUT",
                     error: "Ups! Something went wrong! 😧 Try again"
                 }); //end of render
             });
@@ -166,6 +193,10 @@ app.get("/signature", notLoggedIn, (req, res) => {
         res.render("signature", {
             layout: "main",
             title: "Sign here!",
+            loglink: "/logout",
+            logbutton: "LOGOUT",
+            about: "/about",
+            abouttext: "ABOUT",
             username: info.rows[0].first
         });
     }); //end promise chain
@@ -184,6 +215,10 @@ app.post("/signature", notLoggedIn, (req, res) => {
                     layout: "main",
                     title: "Oh no!",
                     username: info.rows[0].first,
+                    loglink: "/logout",
+                    logbutton: "LOGOUT",
+                    about: "/about",
+                    abouttext: "ABOUT",
                     error: "Ups! Something went wrong! 😧 Try again"
                 }); //end render
             });
@@ -199,6 +234,10 @@ app.get("/thankyou", notLoggedIn, requireSignature, (req, res) => {
                 res.render("thankyou", {
                     layout: "main",
                     title: "Thank you for signing!",
+                    loglink: "/logout",
+                    logbutton: "LOGOUT",
+                    about: "/about",
+                    abouttext: "ABOUT",
                     signatureURL: info.rows[0].signature,
                     supporters: data.rowCount + 1
                 });
@@ -222,7 +261,11 @@ app.get("/signers", notLoggedIn, requireSignature, loggedIn, (req, res) => {
             res.render("signers", {
                 layout: "main",
                 title: "Look who has already signed!",
-                list: list.rows
+                list: list.rows,
+                loglink: "/logout",
+                logbutton: "LOGOUT",
+                about: "/about",
+                abouttext: "ABOUT"
             });
         })
         .catch(err => {
@@ -234,7 +277,11 @@ app.get("/signers/:city", notLoggedIn, (req, res) => {
     db.cityList(req.params.city.toLowerCase()).then(list => {
         res.render("citylist", {
             city: req.params.city,
-            list: list.rows
+            list: list.rows,
+            loglink: "/logout",
+            logbutton: "LOGOUT",
+            about: "/about",
+            abouttext: "ABOUT"
         });
     });
 });
@@ -243,7 +290,11 @@ app.get("/signers/:city", notLoggedIn, (req, res) => {
 app.get("/login", requireSignature, loggedIn, (req, res) => {
     res.render("login", {
         layout: "main",
-        title: "Login"
+        title: "Login",
+        loglink: "/welcome",
+        logbutton: "REGISTER",
+        about: "/about",
+        abouttext: "ABOUT"
     });
 }); // end get login
 
@@ -254,6 +305,10 @@ app.post("/login", requireSignature, loggedIn, (req, res) => {
                 res.render("login", {
                     layout: "main",
                     title: "Oh no!",
+                    loglink: "/welcome",
+                    logbutton: "REGISTER",
+                    about: "/about",
+                    abouttext: "ABOUT",
                     error:
                         "Ups! Something went wrong! 😧 Are you sure you have already registered in our petition? Try again"
                 });
@@ -284,6 +339,10 @@ app.post("/login", requireSignature, loggedIn, (req, res) => {
                             res.render("login", {
                                 layout: "main",
                                 title: "Oh no!",
+                                loglink: "/welcome",
+                                logbutton: "REGISTER",
+                                about: "/about",
+                                abouttext: "ABOUT",
                                 error:
                                     "Oh no! 😧 Your email and password are not a match 💔 Try again"
                             }); //end render login no match
@@ -299,6 +358,10 @@ app.post("/login", requireSignature, loggedIn, (req, res) => {
             res.render("login", {
                 layout: "main",
                 title: "Oh no!",
+                loglink: "/welcome",
+                logbutton: "REGISTER",
+                about: "/about",
+                abouttext: "ABOUT",
                 error: "Ups! Something went wrong! 😧  Try again"
             }); //end render error
         }); //end outer promise chain
@@ -318,7 +381,11 @@ app.get("/myprofile", notLoggedIn, requireSignature, loggedIn, (req, res) => {
                     email: info.rows[0].email,
                     age: extra.rows[0] ? extra.rows[0].age : "",
                     city: extra.rows[0] ? extra.rows[0].city : "",
-                    homepage: extra.rows[0] ? extra.rows[0].url : ""
+                    homepage: extra.rows[0] ? extra.rows[0].url : "",
+                    loglink: "/logout",
+                    logbutton: "LOGOUT",
+                    about: "/about",
+                    abouttext: "ABOUT"
                 }); //end render myprofile
             });
         })
@@ -367,6 +434,10 @@ app.post("/myprofile", notLoggedIn, requireSignature, loggedIn, (req, res) => {
                                 age: extra.rows[0].age,
                                 city: extra.rows[0].city,
                                 homepage: extra.rows[0].url,
+                                loglink: "/logout",
+                                logbutton: "LOGOUT",
+                                about: "/about",
+                                abouttext: "ABOUT",
                                 error:
                                     "Ups! Something went wrong! 😧  Try again"
                             }); //end render myprofile

@@ -1,32 +1,34 @@
 
-<body>
-<main>
-    <h1>Sign our petition to make universal health care a global reality!</h1>
-    <br>
-    <p>Health care is one of the ground stones of development, allowing people to reach their full potential in life and contribute for a better reality for all. Support us on this pleadge for a global health care system! </p>
-    <p>Our pleadge is to support the international community on the discussion over the creation of an international organism that assembles the financial and technical resources to implement this project worldwide!</p>
-    <br>
-    <p>PETITION FOR THE RIGHT OF A HEALTHY LIFE WITHOUT BORDERS!</p>
-    <h2>REGISTER</h2>
-    <form class="" method="post">
-        <input type="text" name="firstName" value="">First Name
-        <input type="text" name="lastName" value="">Last Name
-        <br><br>
-        <input type="email" name="email" value="">e-mail
-        <input type="password" name="password" value="">password
-        <br><br>
-        <button id='submitButton' type="" name="submitButton">Register for health!</button>
-        <p class ='errormessage'>{{error}}</p>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
-    <p>Are you already a registered member on our petition? <a href="/login">🚑 Log in here 🚑</a> </p>
-    <h1>Want to know more about universal health care and why it is important? <a href="/about"> CLICK HERE </a> </h1>
+<body class='welcome'>
+    <div class='header'>
+        <a class="about" href="{{about}}"> {{abouttext}}</a>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
+    <main>
+        <h1>Sign our petition to make universal health care a global reality!</h1>
+        <br>
+        <p>We pleadge to the creation of an international organism that assembles and coordinates the financial and technical resources to implement universal healthcare worldwide!</p>
+        <br>
+        <p>PETITION FOR THE RIGHT OF A HEALTHY LIFE WITHOUT BORDERS!</p>
+        <h2>REGISTER</h2>
+        <form class="" method="post">
+            <input type="text" name="firstName" value="">  First Name
+            <input type="text" name="lastName" value="">  Last Name
+            <br><br>
+            <input type="email" name="email" value="">  E-mail
+            <input type="password" name="password" value="">  Password
+            <br><br>
+            <button id='submitButton' type="" name="submitButton">Register for health!</button>
+            <p class ='errormessage'>{{error}}</p>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+        <p>Are you already a registered member on our petition? <a class='fakebutton'href="/login">🚑 Log in here 🚑</a> </p>
+        <h1>Want to know more about universal health care and why it is important? <a href="/about"> Check some information here! </a> </h1>
 
-</main>
-<footer>
-<p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
-<a class="logout" href="/logout">  LOG OUT  </a>
-</footer>
+    </main>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>

@@ -1,21 +1,30 @@
-<body>
-    <h1>Glad to see you back on our page to support Global Universal Healthcare!</h1>
-    <br>
-    <h2>LOGIN</h2>
-    <form  method="post">
-        <input type="email" name="email" value="">  e-mail
-        <br><br>
-        <input type="password" name="password">  password
-        <br><br>
-        <button id='submitButton' name="submitButton">Glad to see you came back!</button>
+<body class='loginpage'>
+    <div class='header'>
+        <a class="about" href="{{about}}">{{abouttext}}</a>
+        <a class="log" href="{{loglink}}">{{logbutton}}</a>
+    </div>
+    <main>
+        <h1>Glad to see you back on our page to support Global Universal Healthcare!</h1>
         <br>
-        <p class ='errormessage'>{{error}}</p>
-        <br>
-        <p>Not registered on our petition yet?</p>
-        <a href="/welcome">🚑 Register here!🚑</a>
-        <br><br>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
+        <h2>LOGIN</h2>
+        <form  method="post">
+            <input type="email" name="email" value="">  e-mail
+            <br><br>
+            <input type="password" name="password">  password
+            <br><br>
+            <button id='submitButton' name="submitButton">Glad to see you came back!</button>
+            <br>
+            <p class ='errormessage'>{{error}}</p>
+            <br>
+            <p>Not registered on our petition yet?</p>
+            <a class='fakebutton' href="/welcome">🚑 Register here!🚑</a>
+            <br><br>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+    </main>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>

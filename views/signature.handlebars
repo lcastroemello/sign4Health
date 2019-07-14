@@ -1,18 +1,27 @@
-<body>
-    <h1>Dear {{username}}, you are on the way
-         to support our noble cause, we only need your signature to seal the deal!</h1>
-    <br>
-    <form class="" method="post">
-        <p>Sign below:</p>
-        <canvas id="canvas" width="500" height="150"> Please sign here!</canvas>
-        <input type="hidden" name='signature' id='hiddenSignature' value="">
-        <br><br>
-        <button id='submitButton' type="" name="submitButton">Send your signature!</button>
-        <p class ='errormessage'>{{error}}</p>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
-    <h2>Still not sure about signing? Read more about how important this matter is clicking<a href="/about"> HERE </a> </h2>
-    <h2>Feel free to   <a href="/logout"> LOG OUT </a>   and come back to sign later if you prefer 🤷🏻‍♀️ </h2>
-    <br>
+<body class='sigpage'>
+    <div class='header'>
+        <a class="about" href="{{about}}"> {{abouttext}}</a>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
+    <main>
+        <h1>Dear {{username}}, you are on the way
+             to support our noble cause, we only need your signature to seal the deal!</h1>
+        <br>
+        <form class="" method="post">
+            <p>Sign below:</p>
+            <canvas id="canvas" width="500" height="150"> Please sign here!</canvas>
+            <input type="hidden" name='signature' id='hiddenSignature' value="">
+            <br><br>
+            <button id='submitButton' type="" name="submitButton">Send your signature!</button>
+            <p class ='errormessage'>{{error}}</p>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+        <h2>Still not sure about signing? Read more about how important this matter is clicking<a href="/about"> HERE </a> </h2>
+        <h2>Feel free to   <a href="/logout"> LOG OUT </a>   and come back to sign later if you prefer 🤷🏻‍♀️ </h2>
+        <br>
+    </main>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>

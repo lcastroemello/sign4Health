@@ -29,8 +29,26 @@ canvas.addEventListener("mousemove", e => {
 canvas.addEventListener("mouseup", () => {
     mousePressed = false;
 });
-
 canvas.addEventListener("mouseleave", () => {
+    mousePressed = false;
+});
+
+canvas.addEventListener("touchstart", e => {
+    let rect = canvas.getBoundingClientRect();
+    console.log("mouse down is being detected");
+    mousePressed = true;
+    signing(e.clientX - rect.left, e.clientY - rect.top, false);
+});
+canvas.addEventListener("touchmove", e => {
+    let rect = canvas.getBoundingClientRect();
+    if (mousePressed) {
+        signing(e.clientX - rect.left, e.clientY - rect.top, true);
+    }
+});
+canvas.addEventListener("touchend", () => {
+    mousePressed = false;
+});
+canvas.addEventListener("touchleave", () => {
     mousePressed = false;
 });
 

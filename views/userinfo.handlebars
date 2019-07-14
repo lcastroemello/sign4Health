@@ -1,21 +1,30 @@
-<body>
+<body class='userinfo'>
+    <div class='header'>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
+    <main>
     <h1>Let us know a bit more about you!</h1>
     <br>
     <p>With this information you will be able to bond with people around you that share our pledge! </p>
     <br>
-    <h2>REGISTER</h2>
     <form class="" method="post">
         <input type="number" name="age" value="">What is your age?
         <br><br>
         <input type="text" name="city" value="">On which city do you live?
         <br><br>
         <input type="url" name="homepage" value="">Have a homepage?
+        (If not, leave it blank)
         <br><br>
         <button id='submitButton' type="" name="submitButton">Continue</button>
         <p class ='errormessage'>{{error}}</p>
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
     <p>(This is optional, feel free to continue! You will be able to change this information later on if you want.) </p>
+    <br><br>
+</main>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </body>

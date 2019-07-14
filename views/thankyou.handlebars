@@ -1,4 +1,9 @@
-<body>
+<body class='thankyoupage'>
+    <div class='header'>
+        <a class="myprof" href="/myprofile">MY PROFILE</a>
+        <a class="about" href="{{about}}"> {{abouttext}}</a>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
     <main>
     <h1>Thank you for giving your contribution for global, accessible healthcare!</h1>
     <p>Every signature counts on our fight for health cooperation among nations! Tell your friends about our petition!</p>
@@ -9,12 +14,11 @@
         <br><br><br>
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
-    <a href="/myprofile">See your profile</a>
+    <br><br>
     </main>
-    <footer>
-    <p class='footertext'> &copy; Livia de Castro e Mello 2019 🌎 🌍 🌏 </p>
-    <a class="logout" href="/logout">  LOG OUT  </a>
-</footer>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 </body>

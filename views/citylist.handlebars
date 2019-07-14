@@ -1,6 +1,11 @@
-<body>
+<body class='signerscity'>
+    <div class='header'>
+        <a class="myprof" href="/myprofile">MY PROFILE</a>
+        <a class="about" href="{{about}}"> {{abouttext}}</a>
+        <a class="log" href="{{loglink}}">  {{logbutton}}  </a>
+    </div>
     <main>
-    <h1>We in {{city}} all signed for organized international cooperation to provide global healthcare!</h1>
+    <h1>We in {{city}} all signed for global healthcare!</h1>
     {{#list}}
     <ul>
         <li>
@@ -15,9 +20,7 @@
     </ul>
     {{/list}}
     </main>
-    <footer>
-    <p>🌎 🌍 🌏</p>
-    <a class="logout" href="/logout">  LOG OUT  </a>
-    <a href="/myprofile"> See your profile </a>
-</footer>
+    <div class='footer'>
+        <p class='footertext'> &copy; Livia de Castro e Mello 2019 </p>
+    </div>
 </body>
