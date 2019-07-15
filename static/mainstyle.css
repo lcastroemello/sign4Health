@@ -316,3 +316,80 @@ ul {
     align-items: center;
     text-align: center;
 }
+
+/* MEDIAQUERY */
+@media screen and (max-width: 800px) {
+    .fakebutton {
+        font-size: 1rem;
+    }
+    .links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .youtubevideo {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .germangov {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .un {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .who {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .abouttext {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .wiki {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .tarik {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .sridhar {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+    .twitter {
+        font-size: 1rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 2rem;
+    }
+
+    .header {
+        grid-template-columns: 18rem 1fr 15rem 15rem;
+        height: 5rem;
+    }
+
+    .myprof {
+        font-size: 2rem;
+    }
+    .log {
+        font-size: 2rem;
+    }
+
+    .about {
+        font-size: 2rem;
+    }
+
+    body {
+        grid-template-rows: 3rem 1fr 1rem;
+    }
+}
