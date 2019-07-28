@@ -5,6 +5,7 @@ const ca = require("chalk-animation");
 const db = require("./utils/db");
 const bcrypt = require("bcryptjs");
 const csurf = require("csurf");
+const secrets = require("./secrets");
 
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
@@ -14,7 +15,7 @@ var cookieSession = require("cookie-session");
 app.use(express.static("./static"));
 app.use(
     cookieSession({
-        secret: "its gonna be ok",
+        secret: secrets.SECRET,
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
